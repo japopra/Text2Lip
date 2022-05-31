@@ -14,7 +14,7 @@ def AudiotoWAVfile ( src, dst ):
   sf.write( dst, x, sr,subtype='PCM_24' );
 
 
-def transform ( basePath, outputFolder, removeOriginal = False ):
+def transform ( basePath, outputFolder, generateOutputFolder = False, removeOriginal = False ):
     if ( outputFolder[-1] != "/" ):
         outputFolder += "/";
 
@@ -31,13 +31,18 @@ def transform ( basePath, outputFolder, removeOriginal = False ):
     elif ( os.path.isdir( basePath ) ):
         if ( basePath[-1] != "/"):
             basePath += "/";
-        folderName = os.path.basename( basePath );
-        ensureFolderExists( outputFolder + folderName );
+       
+
+        newOutputFolder = outputFolder;
+        folderName = os.path.basename( os.path.normpath(basePath) );
+        if ( generateOutputFolder ):
+            newOutputFolder += folderName + "/";
+            ensureFolderExists( newOutputFolder );
         
         filesInFolder = os.listdir( basePath );
         count = 0;
         for file in filesInFolder:
-            transform( basePath + file, outputFolder + folderName + "/", removeOriginal );
+            transform( basePath + file, newOutputFolder, True, removeOriginal );
             count += 1;
             print( folderName, " : " + str(count) +" / " + str( len(filesInFolder) ) ); 
     
@@ -45,4 +50,4 @@ def transform ( basePath, outputFolder, removeOriginal = False ):
         print( basePath + " is neither a file nor a directory.")
     
 
-transform( sys.argv[1], sys.argv[2], True);
+transform( sys.argv[1], sys.argv[2], False, True); #
