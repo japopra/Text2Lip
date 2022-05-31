@@ -274,7 +274,7 @@ pushSentence ( text, options ) --returns-->  object { id: number, totalTime: num
     - text: String of phonemes to display.  
     - options: [Optional] object containing any sentence configuration parameters the user desires
         + phT : Float32Array, duration (seconds) of each phoneme. Overrides sentT. This duration will be used as the time it takes to transition from phoneme-1 to this phoneme.  
-        + sentT : Number, duration (seconds) of whole sentence. Overrides default speed. Delay not included.  
+        + sentT : Number, duration (seconds) of whole sentence. Overrides speed. Delay not included.  
         + speed: Number, phonemes/s of the whole string. Overrides default speed. 
         + phInt : Float32Array, intensity of each phoneme. Overrides sentInt.
         + sentInt : Number, intensity of the entire sentence. Overrides default intensity  
