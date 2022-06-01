@@ -3,6 +3,13 @@ Simple JavaScript module to procedurally generate mouth blendshape weights from 
 
 [Text2Lip doc](Text2LipDoc.md)
 
+# Demos
+[WebGLStudio Demo](https://webglstudio.org/latest/player.html?url=fileserver%2Ffiles%2Fjaumep%2Fprojects%2FText2Lip%2FV1_0%2FText2Lip_V1_0_Basic.scene.json)
+
+[WebGLStudio Demo Base Code](/demo/)
+
+[Video Coarticulation](https://www.youtube.com/watch?v=_GwAchKdBGU) : Case A does not use coarticulation. Case B does.
+
 
 # Pipeline
 

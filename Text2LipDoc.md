@@ -1,12 +1,22 @@
 # Text2Lip Doc
 
 Currently this script is a module. If the class is to be incrusted somewhere for some reason, just:
- * Delete the this.setTables line from the Text2Lip constructor (not interface)
  * Remove the export line
+ * (optionally) Delete the this.setTables line from the Text2Lip constructor (not interface)
+ ```
+ function Text2Lip() {
+    [...]
+    // default setup
+    this.setTables( T2LTABLES.PhonemeToViseme, T2LTABLES.Coarticulations, T2LTABLES.LowerBound, T2LTABLES.UpperBound );
+    [...]
+}
+ ```
  * (optionally) Remove the clamp function
  * (optionally) Remove all undesired tables
 
-### Examples
+ ---
+
+## Examples
 ```
 import { Text2LipInterface, T2LTABLES } from Text2Lip.js
 
@@ -45,7 +55,7 @@ MainRender ( ) {
 }
 
 ```
-
+---
 ## Viseme, Coarticulation and Translation Tables
 
 * T2LTABLES.BlendshapeNames  
@@ -76,7 +86,7 @@ table that translate from Arpabet 1-letter to Arpabet 2-letter
 Table that translate from Arpabet 2-letter to Arpabet 1-letter
 
 
-
+---
 ## Text2LipInterface API Summary
 ```
 
