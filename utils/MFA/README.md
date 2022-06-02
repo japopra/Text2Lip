@@ -50,12 +50,12 @@ pip install pandas
 ```
 conda activate Aligner
 ```
-3. Go to the directory that contains the [MFA skeleton](/) with all scripts associated. You can move this folder wherever you prefer.
+3. Go to the directory that contains the [MFA skeleton]() with all scripts associated. You can move this folder wherever you prefer.
 ```
 cd path/to/folder/MFA
 ```
 
-4. Ensure every audio have the same sampling rate and file format. Sometimes MFA will not accept different file formats or sampling rates in the same batch. This will transform every audio into .wav at 48000. It fetches .mp3, .wav and .ogg. Other file types are ignored. To include   
+4. Ensure every audio have the same sampling rate and file format. Sometimes MFA will not accept different file formats or sampling rates in the same batch. This will transform every audio into .wav at 48000. It fetches .mp3, .wav and .ogg. Other file types are ignored. To allow for other audio types, modify the "acceptedFileTypes" variable.      
 _python audioCorrection.py path/to/fetch path/to/store_
 ```
 python audioCorrection.py ToAlign ToAlign
@@ -90,8 +90,8 @@ https://mfa-models.readthedocs.io/en/latest/dictionary/index.html#dictionary
 IMPORTANT: every space should be a tabular space, except the spaces AFTER the first ``S`` in the phoneme transcription
 ```
 stonks	1.0	0.0	0.0	0.0	S T AO1 NG K S
-stonks  1.0	0.0	0.0	0.0	S T AO NG K S
-s'ton-ks    1.0 0.0 0.0 0.0 S T AO NG K S
+stonks	1.0	0.0	0.0	0.0	S T AO NG K S
+s'ton-ks	1.0	0.0	0.0	0.0	S T AO NG K S
 ``` 
 
 
@@ -100,6 +100,6 @@ s'ton-ks    1.0 0.0 0.0 0.0 S T AO NG K S
  * Wrong/weird words on the plain text file. MFA translates through dictionaries, if it does not appear there sometimes crash and sometimes simply ignores that word, using blank phonemes instead.
  * When weird words need to be used, expand the dictionary or try to find other real english words that are similar to them. The resulting visual appearance should not differ too much. 
  * Numbers should be translated into words. Usually does not crash but it just puts a blank phoneme over the number.
- * When plainText, avovid having things like "``Let's start``". Sometimes the model does not understand the ``'``. Also, the ``'s`` and ``start`` are usually merged when speaking but the MFA will try to search for it and sometimes fail
+ * When plainText, avovid having things like ``Let's start``. Sometimes the model does not understand the ``'``. Also, the ``'s`` and ``start`` are usually merged when speaking but the MFA will try to search for it and sometimes fail
 
  ``.`` 
