@@ -62,6 +62,8 @@ python audioCorrection.py ToAlign ToAlign
 ```
 
 5. Alignment  
+mfa align --clean FOLDER/TO/FETCH DICTIONARY ACOUSTIC_MODEL FOLDER/TO/STORE
+dictionaries and acoustic models can either be the ones downloaded through mfa or a path to a file (as when downloading a dictionary via web)
 ```
 mfa align --clean ToAlign english_us_arpa english_us_arpa Aligned
 ```
