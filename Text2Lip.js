@@ -813,8 +813,7 @@ let Arpa1to2 = {
 
 
 let T2LTABLES = {
-    BlendshapeNames : [ "kiss", "upperLipClosed", "lowerLipClosed", "jawOpen", "tongueFrontUp", "tongueBackUp", "tongueOut" ],
-
+    BlendshapeMapping : { kiss : 0, upperLipClosed : 1, lowerLipClosed : 2, jawOpen : 3, tongueFrontUp : 4, tongueBackUp : 5, tongueOut : 6 },
     LowerBound : lowerBound,
     UpperBound : upperBound,
     Coarticulations: coarts,
