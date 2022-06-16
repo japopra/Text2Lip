@@ -11,7 +11,7 @@ let CoreScript = LS.Globals.Scripts["root/CoreScript"];
 let TablesScript = LS.Globals.Scripts["root/TablesScript"];
 
 
-let Arpa2to1 = TablesScript._Arpa2to1;
+let Arpa2to1 = null;
 
 
 let ccsv_test1 = "file,word,phoneme,time_1third,time_mid,time_2third,time_start,time_end,duration,F0_avg,F1_1third,F1_mid,F1_2third,F2_1third,F2_mid,F2_2third,F3_1third,F3_mid,F3_2third\n\

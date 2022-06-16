@@ -861,16 +861,6 @@ this.onMouseDown = function (e) {
    this.GUI.mouseDown( e );
 }
 
-let cameraController = node.getComponent(LS.Components.CameraController);
-let pressedC = false;
-// to (not) orbit camera. action=0 nothing. action=1 orbit 
-this.onKeyDown = function (e) {
-  if (e.keyCode == 67) { // KeyC
-    cameraController.left_button_action = !cameraController.left_button_action;
-    pressedC = !pressedC;
-  }
-}
-
 
 this.onRenderGUI = function () {
   if (!this.lipsyncModule)
@@ -952,9 +942,22 @@ this._emotionIntensity = new Float32Array(2); this._emotionIntensity.fill(0.5);
 this._emotionIntensitySlider = null; 
 
 
+this.GUI = GUI2DLib.createGUI( gl );
+this.GUI.createButton("SLIDERS", (function () { this.lipsyncModule.start(Lipsync.MODES.FREE); }).bind(this) );
+
+let cameraController = node.getComponent(LS.Components.CameraController);
+this.cameraOrbitDisabler = 0; // bit 0 pressed C, bit 1 sliders
+
+// to (not) orbit camera. action=0 nothing. action=1 orbit 
+this.onKeyDown = function (e) {
+  if (e.keyCode == 67) { // KeyC
+    let cState = !( this.cameraOrbitDisabler & 0x01 );
+    this.cameraOrbitDisabler = ( this.cameraOrbitDisabler & (~0x01)) | cState;
+  }
+}
+
 
 this.onStart = function () {
-  this.GUI = GUI2DLib.createGUI( gl );
   
   TablesScript = LS.Globals.Scripts["root/TablesScript"];
   let LBVisemes = TablesScript._lowerBound;
@@ -970,10 +973,11 @@ this.onStart = function () {
 
 
   let that = this;
-  this.GUI.createButton("SLIDERS", function () { that.lipsyncModule.start(Lipsync.MODES.FREE); });
+  //this.GUI.createButton("SLIDERS", function () { that.lipsyncModule.start(Lipsync.MODES.FREE); });
 
   // sliders for Blendshape weights
   function BSWslidersUpdate(index, newV, oldV) {
+    that.cameraOrbitDisabler |= 0x02;
     newV[1] = 0;
     if (that.lipsyncModule.working && that.lipsyncModule.mode == Lipsync.MODES.FREE) {
       that.lipsyncModule.BSW[index] = newV[0];
@@ -995,7 +999,7 @@ this.onStart = function () {
   this.GUI.createSlider1D("TONGUE OUT", 200, sliderYOffset + 475, 100, 50, 0, BSWslidersUpdate.bind(this, 6), BSWslidersRender.bind(this));
 
   
-  this._emotionIntensitySlider = this.GUI.createSlider2D("", "Angry <---> Happy", "Tired <---> Energetic", 0, 0, 250, 250, this._emotionIntensity, function(newV,oldV){ that._emotionIntensity.set(newV); that.lipsyncModule.t2lip.setDefaultIntensity( newV[1] ); });
+  this._emotionIntensitySlider = this.GUI.createSlider2D("", "Angry <---> Happy", "Tired <---> Energetic", 0, 0, 250, 250, this._emotionIntensity, function(newV,oldV){ that.cameraOrbitDisabler |= 0x02; that._emotionIntensity.set(newV); that.lipsyncModule.t2lip.setDefaultIntensity( newV[1] ); });
 
   // Get head node
   let head = node.scene.getNodeByName(this.headNodeName);
@@ -1030,7 +1034,10 @@ let blinkTmax = 0.2;  // max blink time animation
 
 
 this.onUpdate = function (dt) {
-  this.GUI.update(dt);
+  this.cameraOrbitDisabler &= 0x01; // reset disabler except "pressed c"
+  this.GUI.update(dt); 
+  // if any slider is being used, camera orbiter will be disabled
+  cameraController.left_button_action = !this.cameraOrbitDisabler;
 
   // blinking ---------------------
   if (blinkT >= blinkTmax) { // blink finished. Set new timeout
