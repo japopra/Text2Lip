@@ -13,7 +13,7 @@ const GUI2DLib = {
         GUI2DINSTANCE.render = function ( ){
             this.renderButtons( );
             this.renderSliders( );
-            this.renderSpectrograms( );
+            this.renderSpectrogram( );
         }
 
         GUI2DINSTANCE.mouseDown = function ( mouseDownEvent ){
@@ -59,7 +59,7 @@ const GUI2DLib = {
             return spectrogram;
         }
 
-        GUI2DINSTANCE.renderSpectrograms = function(){
+        GUI2DINSTANCE.renderSpectrogram = function(){
             // renders spectrogram as one square per value in array. It would be better a shader but canvas 2d...
             for ( let item = 0; item < this.SPECTROGRAMS.length; ++item ){                
                 let spectro = this.SPECTROGRAMS[ item ];
@@ -122,7 +122,7 @@ const GUI2DLib = {
                 gl.fillText(text, spectro.x + spectro.w * 0.5 - textMeasure.width * 0.5, spectro.y - textMeasure.height);
                 
 
-            }// end of render of 1 spectro
+            }
         }
 
         
