@@ -224,4 +224,4 @@ def simplifyMFAOutput ( inputPath, outputFolder, avoidFirstFolder = False ):
 
 #output = subprocess.run(['mfa', 'align', '--clean', 'ToAlign', 'english_us_arpa', 'english_us_arpa', 'Aligned'], text=True, capture_output=True, check=True);
 
-simplifyMFAOutput( sys.argv[1], sys.argv[2], avoidFirstFolder = True );
+simplifyMFAOutput( "Aligned", "SimplifiedAligned", avoidFirstFolder = True );

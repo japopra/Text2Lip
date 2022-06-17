@@ -32,4 +32,4 @@ https://montreal-forced-aligner.readthedocs.io/en/latest/
 (pretrained models) https://mfa-models.readthedocs.io/en/latest/  
 Coded in python, this tool makes it easy to align several files at once.  
 Since it uses dictionaries to recognise words, it is easy to include new (rare) terms such as names.  
-A quick setup and usage explanation is given in [MFA](utils/MFA/)
+[A quick setup and usage explanation is given in MFA](utils/MFA/)

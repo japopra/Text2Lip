@@ -50,4 +50,4 @@ def transform ( basePath, outputFolder, generateOutputFolder = False, removeOrig
         print( basePath + " is neither a file nor a directory.")
     
 
-transform( sys.argv[1], sys.argv[2], False, True); #
+transform( "ToAlign", "ToAlign", False, True); #

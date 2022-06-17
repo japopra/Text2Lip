@@ -56,22 +56,22 @@ cd path/to/folder/MFA
 ```
 
 4. Ensure every audio have the same sampling rate and file format. Sometimes MFA will not accept different file formats or sampling rates in the same batch. This will transform every audio into .wav at 48000. It fetches .mp3, .wav and .ogg. Other file types are ignored. To allow for other audio types, modify the "acceptedFileTypes" variable.      
-_python audioCorrection.py path/to/fetch path/to/store_
+Fetches every audio from "ToAlign" folder, converts them to wav and REMOVES the ORIGINAL AUDIO FILES
 ```
-python audioCorrection.py ToAlign ToAlign
+python audioCorrection.py
 ```
 
 5. Alignment  
-mfa align --clean FOLDER/TO/FETCH DICTIONARY ACOUSTIC_MODEL FOLDER/TO/STORE
-dictionaries and acoustic models can either be the ones downloaded through mfa or a path to a file (as when downloading a dictionary via web)
+mfa align --clean Folder/To/Fetch DICTIONARY ACOUSTIC_MODEL Folder/To/Store
+dictionaries and acoustic models can either be the ones downloaded through mfa or a path to a file  
 ```
 mfa align --clean ToAlign english_us_arpa english_us_arpa Aligned
 ```
 
-6. Transform every .TextGrid into a simple json that can be easily loaded into javascript. It also avoids having to parse TextGrid files during application execution. This script will also make some adjustments on phoneme timings ( nothing fancy )  
-_python simplifyAlignedFiles.py path/fetch/textgrids path/store/simpleAligns_
+6. Transform every .TextGrid (from "Aligned" folder) into a simple json (into "SimplifiedAligned" folder) that can be easily loaded into javascript. It also avoids having to parse TextGrid files during application execution. This script will also make some adjustments on phoneme timings ( nothing fancy )  
+
 ```
-python simplifyAlignedFiles.py Aligned SimplifiedAligned
+python simplifyAlignedFiles.py
 ```
 
 
@@ -89,7 +89,8 @@ https://mfa-models.readthedocs.io/en/latest/dictionary/index.html#dictionary
 2. Select the desired dictionary (in this case english Arpabet) and download the .dict file.
 3. Open the .dict in your prefered text/code editor
 4. Include the word you want, taking into account that dictionaries are alphatically sorted. For example include the word _stonks_. Stress symbols can be optionally included (numbers) alongside the phoneme representations. MFA also accepts some symbols on the plaintext word such as ' and -  
-IMPORTANT: every space should be a tabular space, except the spaces AFTER the first ``S`` in the phoneme transcription
+IMPORTANT: every space should be a tabular space, except the spaces AFTER the first ``S`` in the phoneme transcription  
+To ensure correctness, copy a valid existing entry
 ```
 stonks	1.0	0.0	0.0	0.0	S T AO1 NG K S
 stonks	1.0	0.0	0.0	0.0	S T AO NG K S
