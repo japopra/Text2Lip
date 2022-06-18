@@ -979,8 +979,9 @@ this.onStart = function () {
   //this.GUI.createButton("SLIDERS", function () { that.lipsyncModule.start(Lipsync.MODES.FREE); });
 
   // sliders for Blendshape weights
-  function BSWslidersUpdate(index, newV, oldV) {
-    that.cameraOrbitDisabler |= 0x02;
+  function BSWslidersUpdate(index, newV, oldV, isClicked) {
+    if ( isClicked ){ that.cameraOrbitDisabler |= 0x02; }
+    
     newV[1] = 0;
     if (that.lipsyncModule.working && that.lipsyncModule.mode == Lipsync.MODES.FREE) {
       that.lipsyncModule.BSW[index] = newV[0];
@@ -1002,7 +1003,7 @@ this.onStart = function () {
   this.GUI.createSlider1D("TONGUE OUT", 200, sliderYOffset + 475, 100, 50, 0, BSWslidersUpdate.bind(this, 6), BSWslidersRender.bind(this));
 
   
-  this._emotionIntensitySlider = this.GUI.createSlider2D("", "Angry <---> Happy", "Tired <---> Energetic", 0, 0, 250, 250, this._emotionIntensity, function(newV,oldV){ that.cameraOrbitDisabler |= 0x02; that._emotionIntensity.set(newV); that.lipsyncModule.t2lip.setDefaultIntensity( newV[1] ); });
+  this._emotionIntensitySlider = this.GUI.createSlider2D("", "Angry <---> Happy", "Tired <---> Energetic", 0, 0, 250, 250, this._emotionIntensity, function(newV,oldV,isClicked){ if ( isClicked ){ that.cameraOrbitDisabler |= 0x02; } that._emotionIntensity.set(newV); that.lipsyncModule.t2lip.setDefaultIntensity( newV[1] ); });
 
   // Get head node
   let head = node.scene.getNodeByName(this.headNodeName);

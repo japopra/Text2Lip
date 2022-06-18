@@ -23,6 +23,8 @@ const GUI2DLib = {
 			
         GUI2DINSTANCE.mouseUp = function ( mouseDownEvent ){
             this.mouseUpButtons( mouseDownEvent );
+            this.mouseUpSliders( mouseDownEvent );
+
         }
 
         // Spectrograms -------------------------------------------------------------------------------
@@ -141,7 +143,7 @@ const GUI2DLib = {
          * @param {int} h 
          * @param {Float32Array(2)} v initial values the slider should hold. Values are copied into a slider owned array
          * @param {1 or 2} dim  dimensions of the slider. 1 will render a 1D slider. 2 will render a 2D slider (like a heatmap). Other ignored 
-         * @param {function} updateCallback  (optional) Receives NewValue and OldValue of slider. Only called when a mouseDown activated it
+         * @param {function} updateCallback  (optional) Receives NewValue, OldValue and clickedStatus of slider. Only called when a mouseDown activated it
          * @param {function} renderCallback  (optional) Must return false to not render. Otherwise it always renders  
          * @returns slider obj
          */
@@ -204,20 +206,23 @@ const GUI2DLib = {
 
             for (let i = 0; i < SLIDERS.length; ++i) {
                 let slider = SLIDERS[i]; // reference, not a copy
-                if (!slider.clicked) { continue; }
-                if (slider.clicked && !gl.mouse.left_button) { slider.clicked = false; continue; }
+                //if (!slider.clicked) { continue; }
+                //if (slider.clicked && !gl.mouse.left_button) { slider.clicked = false; continue; }
                 if ( !slider.isUpdateable ){ continue;}
+								
+                if( slider.clicked ){
+                    // swap pointers
+                    let newV = slider.prevV;
+                    let oldV = slider.v;
+                    newV[0] = Math.max( 0, Math.min( 1, (mouse.x - slider.x) / slider.w ) );
+                    newV[1] = Math.max( 0, Math.min( 1, (mouse.y - slider.y) / slider.h ) );
+                    
+                	  slider.prevV = oldV;
+                	  slider.v = newV;
+                }
+              
+               	if (slider.updateCallback) { slider.updateCallback( slider.v, slider.prevV, slider.clicked ); }
 
-                // swap pointers
-                let newV = slider.prevV;
-                let oldV = slider.v;
-                newV[0] = Math.max( 0, Math.min( 1, (mouse.x - slider.x) / slider.w ) );
-                newV[1] = Math.max( 0, Math.min( 1, (mouse.y - slider.y) / slider.h ) );
-
-                slider.prevV = oldV;
-                slider.v = newV;
-
-                if (slider.updateCallback) { slider.updateCallback(newV, oldV); }
             }
         }
 
@@ -232,9 +237,9 @@ const GUI2DLib = {
 
             for (let i = 0; i < SLIDERS.length; ++i) {
                 let slider = SLIDERS[i];
-                if ( !slider.isClickable ){ continue; }
+                if ( !slider.isClickable ){ slider.clicked = false; continue; }
 
-                if (x >= slider.x && x <= (slider.x + slider.w) && y >= slider.y && y <= (slider.y + slider.h)) {
+                if (gl.mouse.left_button && x >= slider.x && x <= (slider.x + slider.w) && y >= slider.y && y <= (slider.y + slider.h)) {
                     slider.clicked = true;
                 }
                 else {
@@ -242,7 +247,12 @@ const GUI2DLib = {
                 }
             }
         }
-
+        
+        GUI2DINSTANCE.mouseUpSliders = function (e) {
+            for (let i = 0; i < SLIDERS.length; ++i) {
+            	SLIDERS[i].clicked = false;
+            }
+        }
         /**
          * Renders sliders
          */

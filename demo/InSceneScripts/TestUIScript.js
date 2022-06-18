@@ -627,7 +627,7 @@ this.onStart = function () {
           times : new Float32Array([0.15,   0.16,0.17,   0.23,0.1,0.29,  0.08,   0.23,0.18,0.18,0.19,  0.09,  0.19,0.17,0.13,0.11,0.19 ]),
           audio : "https://webglstudio.org/latest/fileserver/files//gerard/audios/i-see-five-lamps-f.wav",
           coart : true,
-          title : "5 lamps (audio)",
+          title : "5 lamps",
       }
   );
 
@@ -637,7 +637,7 @@ this.onStart = function () {
           times : null,
           audio : "https://webglstudio.org/latest/fileserver/files//gerard/audios/i-have-four-airplanes-m.wav",
           coart : true,
-          title : "4 planes (audio)",
+          title : "4 planes",
       }
   );
 
@@ -648,7 +648,7 @@ this.onStart = function () {
           audio : null,
           speed : 10,
           coart : true,
-          title : "Hello from the UPF",
+          title : "Hello from the UPF (no audio)",
       }
   );
   
@@ -659,7 +659,7 @@ this.onStart = function () {
           audio : null,
           speed : 10,
           coart : true,
-          title : "Thirteen",
+          title : "Thirteen (no audio)",
       }
   );
 
