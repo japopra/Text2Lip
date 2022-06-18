@@ -861,6 +861,9 @@ this.onMouseDown = function (e) {
    this.GUI.mouseDown( e );
 }
 
+this.onMouseUp = function(e) {
+   this.GUI.mouseUp( e );
+}
 
 this.onRenderGUI = function () {
   if (!this.lipsyncModule)
@@ -943,7 +946,7 @@ this._emotionIntensitySlider = null;
 
 
 this.GUI = GUI2DLib.createGUI( gl );
-this.GUI.createButton("SLIDERS", (function () { this.lipsyncModule.start(Lipsync.MODES.FREE); }).bind(this) );
+this.GUI.createButton("SLIDERS", (function () { this.lipsyncModule.start(Lipsync.MODES.FREE); }).bind(this), "rgba(255,255,255,1)", "rgba(255,255,255,0.5)" );
 
 let cameraController = node.getComponent(LS.Components.CameraController);
 this.cameraOrbitDisabler = 0; // bit 0 pressed C, bit 1 sliders

@@ -210,13 +210,14 @@ function createTestCase_T2L ( obj ){
       let results = parseForcedAligner( text, parserType );
       thatObj.text = results.text;
       thatObj.times = new Float32Array( results.timings );
+      thatObj.outro = true;
     });
   
   }
   else if ( !obj.text ) { return false; }
   
   TESTCASES.push( obj );
-  let button = CoreScript.GUI.createButton( obj.title, function(){ CoreScript.lipsyncModule.start(CoreScript.LIPSYNCMODES.TEXT2LIP, TESTCASES[this.testId]); }, '#CFD186' );
+  let button = CoreScript.GUI.createButton( obj.title, function(){ CoreScript.lipsyncModule.start(CoreScript.LIPSYNCMODES.TEXT2LIP, TESTCASES[this.testId]); }, "rgba(207,209,134,1)", "rgba(207,209,134,0.5"); //'#CFD186', '#CFD1867F' );
 	button.testId = TESTCASES.length-1;
   return true;
 };
@@ -227,7 +228,7 @@ function createTestCase_A2L ( obj ){
   if ( typeof( obj.audio ) !== 'string' ) { obj.audio = null; }  
 
   TESTCASES.push( obj );
-  let button = CoreScript.GUI.createButton( obj.title, function(){ CoreScript.lipsyncModule.start(CoreScript.LIPSYNCMODES.AUDIO2LIP, TESTCASES[this.testId]); }, '#87C38F' );
+  let button = CoreScript.GUI.createButton( obj.title, function(){ CoreScript.lipsyncModule.start(CoreScript.LIPSYNCMODES.AUDIO2LIP, TESTCASES[this.testId]); }, "rgba(135,195,143,1)","rgba(135,195,143,0.5)");//'#87C38F', '#87C38F7F' );
 	button.testId = TESTCASES.length-1;
   return true; 
 }
@@ -618,7 +619,7 @@ this.onStart = function () {
 
   document.getElementsByTagName('body')[0].appendChild(TestsUI);
   
-  CoreScript.GUI.createButton( "Add new Test", function(){ TestsUI.makeVisible(true); } );
+  CoreScript.GUI.createButton( "Add new Test", function(){ TestsUI.makeVisible(true); }, "rgba(255,255,255,1)", "rgba(255,255,255,0.5)");//FFFFFF","FFFFFF7F" );
 
   createTestCase_T2L ( 
       {      

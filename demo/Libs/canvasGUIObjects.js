@@ -20,7 +20,10 @@ const GUI2DLib = {
             this.mouseDownButtons( mouseDownEvent );
             this.mouseDownSliders( mouseDownEvent );
         }
-
+			
+        GUI2DINSTANCE.mouseUp = function ( mouseDownEvent ){
+            this.mouseUpButtons( mouseDownEvent );
+        }
 
         // Spectrograms -------------------------------------------------------------------------------
         let SPECTROGRAMS = GUI2DINSTANCE.SPECTROGRAMS = [];
@@ -350,21 +353,33 @@ const GUI2DLib = {
          * 
          * @param {string} title 
          * @param {function} onClickCallback  when clicked, this callback will be called 
-         * @param {HTML color} color background color of button 
-         * @param {function} renderCallback  (optional) Must return false to not render. Otherwise it always renders  
+         * @param {rgba/rgb/hexWithoutAlpha color} background color of button
+         * @param {rgba/rgb/hexWithoutAlpha color} background color of button when pressed
+				 * @param {function} renderCallback  (optional) Must return false to not render. Otherwise it always renders  
          * @returns 
          */
-        GUI2DINSTANCE.createButton = function (title, onClickCallback, color = null, renderCallback = null ) {
-            let button = { 
+        GUI2DINSTANCE.createButton = function (title, onClickCallback, color = null, pressedColor = null, renderCallback = null ) {
+          if ( !color ){ color = "rgba(255,255,255,255)"; }
+          
+          let button = { 
                 title: title,
                 onClickCallback: onClickCallback, 
                 color: color,
+                pressedColor: ( pressedColor ) ? pressedColor : color,
                 renderCallback: renderCallback,
                 isClickable: true,
                 isRenderable: true,
+                isPressed: false,
             };
             BUTTONS.push(button);
             return button;
+        }
+
+        GUI2DINSTANCE.mouseUpButtons = function (e) {
+            let buttonsAmount = BUTTONS.length;
+            for (let i = 0; i < buttonsAmount; i++) {
+                BUTTONS[i].isPressed = false;
+            }
         }
 
         /**
@@ -398,6 +413,7 @@ const GUI2DLib = {
                 if (x < rect.x + rect.w && x > rect.x &&
                     height - y < rect.y + rect.h && height - y > rect.y) {
                     BUTTONS[i].onClickCallback();
+                    BUTTONS[i].isPressed = true;
                 }
             }
 
@@ -429,7 +445,8 @@ const GUI2DLib = {
                 if (rect.x - width * mod < 0) offsetRect = width * mod - rect.x;
                 rect.x -= width * mod - offsetRect;
                 rect.y = mod * (rect.h + 10);
-                gl.fillStyle = BUTTONS[i].color ? BUTTONS[i].color : "rgba(255,255,255,0.6)";
+              	
+                gl.fillStyle = ( button.isPressed ) ? button.pressedColor : button.color;
                 gl.fillRect(rect.x, rect.y, rect.w, rect.h);
                 gl.fillStyle = "rgba(0,0,0,0.9)";
                 gl.fillText(button.title.substring(0, 30), rect.x + 6, rect.y + 2 * rect.h / 3);
