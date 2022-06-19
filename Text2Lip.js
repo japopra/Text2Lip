@@ -339,37 +339,42 @@ Text2Lip.prototype.update = function ( dt ) {
     // phoneme changed
     if ( p > 0 ) {
 
-        // copy target values to source Viseme. Several phonemes may have passed during this frame. Take the last real target phoneme
-        let lastPhonemeIndex = clamp( this.currTargetIdx - 1, 0, this.text.length - 1 ); // currTargetIdx here is always > 0. text.length here is always > 0
-        this.intensity = this.getIntensityAtIndex( lastPhonemeIndex ); // get last real target viseme with correct intensity, in case more than 1 phoneme change in the same frame
+		// copy target values to source Viseme. Several phonemes may have passed during this frame. Take the last real target phoneme
+		let lastPhonemeIndex = clamp( this.currTargetIdx - 1, 0, this.text.length - 1 ); // currTargetIdx here is always > 0. text.length here is always > 0
+		this.intensity = this.getIntensityAtIndex( lastPhonemeIndex ); // get last real target viseme with correct intensity, in case more than 1 phoneme change in the same frame
 
-        let lastPhoneme = this.text[ lastPhonemeIndex ];
-        let lastPhonemeNext = ( lastPhonemeIndex == ( this.text.length - 1 ) ) ? null : ( this.text[ lastPhonemeIndex + 1 ] );
-        this.getCoarticulatedViseme( lastPhoneme, lastPhonemeNext, this.currV );
+		let lastPhoneme = this.text[ lastPhonemeIndex ];
+		  
+		if ( this.useCoarticulation ){
+			let lastPhonemeNext = ( lastPhonemeIndex == ( this.text.length - 1 ) ) ? null : ( this.text[ lastPhonemeIndex + 1 ] );
+			this.getCoarticulatedViseme( lastPhoneme, lastPhonemeNext, this.currV );
+		}
+		else{
+			this.getViseme( lastPhoneme, this.currV );
+		}
 
+		// end of sentence reached
+		if ( this.currTargetIdx >= this.text.length ) {
+			for ( let i = 0; i < this.numShapes; ++i ) { this.BSW[ i ] = this.currV[ i ]; } // currV holds the last real target phoneme
+			this.changeCurrentSentence();
+			return;
+		}
 
-        // end of sentence reached
-        if ( this.currTargetIdx >= this.text.length ) {
-            for ( let i = 0; i < this.numShapes; ++i ) { this.BSW[ i ] = this.currV[ i ]; } // currV holds the last real target phoneme
-            this.changeCurrentSentence();
-            return;
-        }
+		this.intensity = this.getIntensityAtIndex( this.currTargetIdx ); // get intensity for next target
 
-        this.intensity = this.getIntensityAtIndex( this.currTargetIdx ); // get intensity for next target
-
-        // compute target viseme, using coarticulation 
-        // outro
-        //        if (this.currTargetIdx === this.text.length - 1) {
-        //            for (let i = 0; i < this.numShapes; ++i) { this.targV[i] = 0; }
-        //        }
-        if ( !this.useCoarticulation ) {
-            this.getViseme( this.text[ this.currTargetIdx ], this.targV );
-        }
-        else {
-            let targetPhoneme = this.text[ this.currTargetIdx ];
-            let targetPhonemeNext = ( this.currTargetIdx == ( this.text.length - 1 ) ) ? null : this.text[ this.currTargetIdx + 1 ];
-            this.getCoarticulatedViseme( targetPhoneme, targetPhonemeNext, this.targV );
-        }
+		// compute target viseme, using coarticulation 
+		// outro
+		//        if (this.currTargetIdx === this.text.length - 1) {
+		//            for (let i = 0; i < this.numShapes; ++i) { this.targV[i] = 0; }
+		//        }
+		if ( !this.useCoarticulation ) {
+			this.getViseme( this.text[ this.currTargetIdx ], this.targV );
+		}
+		else {
+			let targetPhoneme = this.text[ this.currTargetIdx ];
+			let targetPhonemeNext = ( this.currTargetIdx == ( this.text.length - 1 ) ) ? null : this.text[ this.currTargetIdx + 1 ];
+			this.getCoarticulatedViseme( targetPhoneme, targetPhonemeNext, this.targV );
+		}
     }
 
     // final interpolation
@@ -595,7 +600,7 @@ let lowerBound = [
     [ 0,     0.08,  0,     0.1,   0.5,   0.5,   0   ], // 4
     [ 0.25,  0.15,  0.15,  0.2,   0,     0,     0   ],
     [ 0.35,  0.15,  0.15,  0.2,   0,     0,     0   ],
-    [ 0.3,   0.15,  0,     0.1,   1,     0,     0   ],
+    [ 0.0,   0.15,  0,     0.1,   1,     0,     0   ],
     [ 0,     0.5,   0.2,   0.1,   0,     0,     0   ], // 8
     [ 0,     0.0,   0.2,   0.1,   0,     0,     0   ],
     [ 0.3,   0,     0,     0.13,  0.8,   0,     0   ],
@@ -613,7 +618,7 @@ let upperBound = [
     [ 0,     0.08,  0,     0.2,   0.6,   0.6,   0.2 ], // 4
     [ 0.45,  0.15,  0.15,  0.6,   0,     0,     0   ],
     [ 0.65,  0.3,   0.3,   0.3,   0,     0,     0   ],
-    [ 0.3,   0.15,  0,     0.4,   1,     0,     0.5 ],
+    [ 0.0,   0.15,  0,     0.4,   1,     0,     0.5 ],
     [ 0,     1,     1,     0.4,   0,     0,     0   ], // 8
     [ 0,     0.0,   1,     0.4,   0,     0,     0   ],
     [ 0.3,   0,     0,     0.13,  0.8,   0,     0   ],
