@@ -453,17 +453,20 @@ Text2Lip.prototype.changeCurrentSentence = function ( advanceIndex = true ) {
      - Outro time HAVE to be accounted for timings. If not included in sentT, the system will use default phoneme speed to transition to neutral. sentT should take it into account
  Any value below 0.001 will be ignored.
  * @param {string/array} text string of phonemes to display 
- * @param {object} options object containing any of the optional string of phonemes to display 
- * @param {Float32Array} phT (Optional) timing for each phoneme. Overrides sentT, speed and defaultSpeed
- * @param {Number} sentT (Optional): Number, timing (in seconds) of whole string. Overrides defaultSpeed and speed argument. Delay not included. Defaults to null.
- * @param {Number} speed (Optional) phonemes/s of whole string. Overrides generalSpeed. Delay not included
+ * @param {object} options object containing any of the optional string of phonemes to display.
+ * @param {Float32Array} phT (Optional) timing for each phoneme. Overrides sentT, speed and default speed.
+ * @param {Number} sentT (Optional): Number, timing (in seconds) of whole string. Overrides default speed and speed argument. Delay not included. Defaults to null.
+ * @param {Number} speed (Optional) phonemes/s of whole string. Overrides default speed. Delay not included.
+ * @param {Float32Array} phInt (Optional) intensity for each phoneme. Overrides sentInt and default intensity.
+ * @param {Number} sentInt (Optional) intensity of whole string. Overrides default intensity. Delay not included.
  * @param {Boolean} useCoart (Optional) use coarticulation. Default to true.
  * @param {Number} delay (Optional) delay to start playing this string. Delay starts at the end of the sentence it is being played now. If none, delay starts immediately.
  * @param {Boolean} copyArrays (Optional) Whether to create new arrays and copy values or directly use the reference sent as argument. Defaults to false (only reference is used).
+ * @param {Boolean} outro (Optional) Whether to automatically include a final "." into the string to end in neutral pose. Defaults to false.
  * @param {Function} onStartEvent (Optional) when sentence starts, this event is called after the generic onSentenceStart event.
  * @param {Function} onEndEvent (Optional) when sentence ends, this event is called after the generic onSentenceEnd event.
  * @returns the id number of the sentence if successful. 0 otherwise.
- */
+*/
 Text2Lip.prototype.pushSentence = function ( text, options = {} ) {
     let phT = options.phT;
     let sentT = options.sentT;
